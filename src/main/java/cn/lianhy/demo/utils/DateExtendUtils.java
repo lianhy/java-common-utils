@@ -171,8 +171,10 @@ public class DateExtendUtils {
     public long getTime(Date dt,int field){
         if(DateConstant.INTERVAL_SECOND == field){
             return dt.getTime()/1000L;
-        }else{
+        }else if(DateConstant.INTERVAL_MILLISECOND == field){
             return dt.getTime();
+        }else{
+            return dt.getTime()/1000L;
         }
     }
 
