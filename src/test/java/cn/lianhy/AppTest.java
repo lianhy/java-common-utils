@@ -1,10 +1,8 @@
 package cn.lianhy;
 
-import static org.junit.Assert.assertTrue;
-
-import cn.lianhy.demo.constant.DateConstant;
-import cn.lianhy.demo.utils.DateExtendUtils;
 import org.junit.Test;
+
+import static org.junit.Assert.assertTrue;
 
 /**
  * Unit test for simple App.
@@ -22,6 +20,5 @@ public class AppTest
 
     @Test
     public void test(){
-        System.out.println(DateExtendUtils.getInstance().getTime("2019-11-15 18:28:12", DateConstant.PATTERN_YMDHMS,DateConstant.INTERVAL_MILLISECOND));
     }
 }
