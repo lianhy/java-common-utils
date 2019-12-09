@@ -12,8 +12,8 @@ import java.security.spec.AlgorithmParameterSpec;
  * 1.AES加密模式：ECB/CBC/CTR/OFB/CFB
  * 2.填充：pkcs5padding/pkcs7padding/zeropadding/iso10126/ansix923
  * 3.数据块：128位/192位/256位
- * 4.KEY 密码
- * 5.IV 偏移量
+ * 4.KEY 密码  16位
+ * 5.IV 偏移量 16位
  * 6.输出 base64/hex
  * 7.字符集：gb2312/gbk/gb18030/utf8
  */
