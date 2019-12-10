@@ -57,6 +57,6 @@ public class IdGen{
      * An IdGenerator that uses SecureRandom for the initial seed and Random thereafter, instead of calling UUID.randomUUID() every time as JdkIdGenerator does. This provides a better balance between securely random ids and performance.
      */
     public static String uuid() {
-        return new AlternativeJdkIdGenerator().toString();
+        return new AlternativeJdkIdGenerator().generateId().toString();
     }
 }
