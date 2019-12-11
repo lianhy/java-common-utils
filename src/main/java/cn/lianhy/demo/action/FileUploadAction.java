@@ -5,9 +5,6 @@ import cn.lianhy.demo.utils.DateExtendUtils;
 import com.alibaba.fastjson.JSONObject;
 import lombok.extern.slf4j.Slf4j;
 import net.coobird.thumbnailator.Thumbnails;
-import org.apache.commons.fileupload.FileItem;
-import org.apache.commons.fileupload.disk.DiskFileItemFactory;
-import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -16,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -65,6 +63,51 @@ public class FileUploadAction {
             }
             jsonObject.put("result","1");
             jsonObject.put("url",cdnPath+ranName);
+            response.getWriter().write(jsonObject.toJSONString());
+        }catch (Exception e){
+            log.error("upload fail error"+e);
+        }
+
+    }
+
+    @PostMapping(value = "/uploads.do")
+    @ResponseBody
+    public void uploads(HttpServletRequest request, HttpServletResponse response)throws ServletException, IOException {
+        JSONObject jsonObject=new JSONObject();
+        String compressFlag=request.getParameter("compressFlag");
+        try{
+            String result="1";
+
+            request.setCharacterEncoding("utf-8");
+
+            MultipartHttpServletRequest multipartRequest=(MultipartHttpServletRequest)request;
+
+            Iterator<String> iterator=multipartRequest.getFileNames();
+
+            List<String> listUrl=new ArrayList<>();
+            while (iterator.hasNext()){
+                MultipartFile file=multipartRequest.getFile(iterator.next());
+                if(file.isEmpty()){
+                    result="0";//文件为空
+                    break;
+                }
+                if(file.getSize() > 1024*1024*10){
+                    result="2";//文件过大
+                    break;
+                }
+                String fileName=file.getOriginalFilename();
+                Random rand = new Random();
+                String ranName = DateExtendUtils.getInstance().getString(new Date(), DateConstant.PATTERN_NOSPACE_YMDHMS) + "_" + rand.nextInt(1000)+fileName.substring(fileName.indexOf("."));
+                if(StringUtils.equals("1",compressFlag)){
+                    Thumbnails.of(file.getInputStream()).scale(1f).outputQuality(0.5f).toFile(cdnPath+ranName);
+                }else{
+                    file.transferTo(new File(cdnPath+ranName));
+                }
+                listUrl.add(cdnPath+ranName);
+            }
+
+            jsonObject.put("result",result);
+            jsonObject.put("listUrl",listUrl);
             response.getWriter().write(jsonObject.toJSONString());
         }catch (Exception e){
             log.error("upload fail error"+e);
