@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping(value = "/demo")
 public class HelloWorld {
 
-    @GetMapping(value = "sayHello.json")
+    @GetMapping(value = "/sayHello.json")
     public String sayHello(String userName){
         log.info("Hello："+userName);
         log.error("Hello："+userName);
