@@ -5,10 +5,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.ZoneId;
+import java.time.*;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -188,6 +185,17 @@ public class DateExtendUtils {
         Calendar.getInstance();
         Date dt=getDate(t1,pattern);
         return getTime(dt,DateConstant.INTERVAL_SECOND);
+    }
+
+    /**
+     * 当前时间 增减或减少指定天数
+     * 此外 LocalDate 还提供其他时间函数
+     * @return
+     */
+    public String addDay(long daysToAdd){
+        LocalDate localDate = LocalDate.now();
+        localDate.plusDays(daysToAdd);
+        return localDate.toString();
     }
 
     private static class SingletonHolder {
